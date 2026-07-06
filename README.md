@@ -1,45 +1,36 @@
-# Incident Impact Calc
-
 ![Incident Impact Calc cover](assets/readme-cover.svg)
+
+# Incident Impact Calc
 
 > Check incident impact notes for missing users, duration, and revenue context
 
-![stack](https://img.shields.io/badge/stack-Python-16a34a?style=flat-square) ![python](https://img.shields.io/badge/python-3.11-dc2626?style=flat-square) ![license](https://img.shields.io/badge/license-MIT-7c3aed?style=flat-square) ![ci](https://img.shields.io/badge/ci-GitHub%20Actions-0891b2?style=flat-square)
+This is a review desk for incident response. The useful part is not a dashboard; it is the tiny repeatable moment where vague records become specific findings.
 
-## At a glance
+## Finding catalog for `incident-impact-calc`
 
-| Area | Detail |
-| --- | --- |
-| Focus | incident response |
-| Command | `incident-impact-calc` |
-| Formats | text, JSON, JSONL, CSV |
-| Output | Markdown table or JSON |
-
-## What it checks
-
-| Rule | Severity | What it catches |
+| Finding | Level | Why it matters |
 | --- | --- | --- |
 | `vague-users` | high | affected users are vague |
 | `unknown-duration` | medium | incident duration is missing |
 | `unknown-revenue` | low | revenue impact is missing |
 
-## Try it locally
+## Try the sample
 
 ```bash
+git clone https://github.com/mertefekurt/incident-impact-calc.git
+cd incident-impact-calc
+python -m venv .venv
+source .venv/bin/activate
 python -m pip install -e ".[dev]"
+```
+
+```bash
 incident-impact-calc examples/sample.txt
-incident-impact-calc examples/sample.txt --json --fail-on medium
+incident-impact-calc examples/sample.txt --json
 ```
 
-## Notes from the code
+## Reading the output
 
-`rules.py` keeps the project policy explicit, while `core.py` handles parsing and report rendering. The CLI stays thin on purpose so the checks are easy to test.
-
-## Verify
-
-```bash
-python -m pip install -e ".[dev]"
-ruff check .
-pytest
-python -m incident_impact_calc --help
-```
+- Markdown is meant for humans reviewing a change.
+- JSON is meant for CI, scripts, or saved reports.
+- `--fail-on` lets the repo decide how strict a gate should be.
