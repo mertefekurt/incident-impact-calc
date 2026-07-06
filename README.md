@@ -1,16 +1,29 @@
-# incident-impact-calc
+# Incident Impact Calc
 
-**Ops Handoff.** Check incident impact notes for missing users, duration, and revenue context.
+![Incident Impact Calc cover](assets/readme-cover.svg)
 
-## Who Uses It
+> Check incident impact notes for missing users, duration, and revenue context
 
-Incident reviews need clear impact statements. This CLI flags vague impact notes before a postmortem is finalized.
+![stack](https://img.shields.io/badge/stack-Python-16a34a?style=flat-square) ![python](https://img.shields.io/badge/python-3.11-dc2626?style=flat-square) ![license](https://img.shields.io/badge/license-MIT-7c3aed?style=flat-square) ![ci](https://img.shields.io/badge/ci-GitHub%20Actions-0891b2?style=flat-square)
 
-## What To Provide
+## At a glance
 
-`incident-impact-calc` accepts incident impact notes or postmortem draft text in text, JSON, JSONL, or CSV form.
+| Area | Detail |
+| --- | --- |
+| Focus | incident response |
+| Command | `incident-impact-calc` |
+| Formats | text, JSON, JSONL, CSV |
+| Output | Markdown table or JSON |
 
-## What Comes Back
+## What it checks
+
+| Rule | Severity | What it catches |
+| --- | --- | --- |
+| `vague-users` | high | affected users are vague |
+| `unknown-duration` | medium | incident duration is missing |
+| `unknown-revenue` | low | revenue impact is missing |
+
+## Try it locally
 
 ```bash
 python -m pip install -e ".[dev]"
@@ -18,30 +31,15 @@ incident-impact-calc examples/sample.txt
 incident-impact-calc examples/sample.txt --json --fail-on medium
 ```
 
-## Escalation
+## Notes from the code
 
-| Rule | Severity | Meaning |
-|---|---:|---|
-| `vague-users` | high | affected users are vague |
-| `unknown-duration` | medium | incident duration is missing |
-| `unknown-revenue` | low | revenue impact is missing |
+`rules.py` keeps the project policy explicit, while `core.py` handles parsing and report rendering. The CLI stays thin on purpose so the checks are easy to test.
 
-## Tests
+## Verify
 
 ```bash
+python -m pip install -e ".[dev]"
 ruff check .
 pytest
 python -m incident_impact_calc --help
 ```
-
-License: MIT
-
-### Example Input
-
-```text
-impact many users duration unknown revenue unknown severity high
-```
-
-### Architecture
-
-`cli.py` reads files, `core.py` evaluates records, and `rules.py` keeps the incident-impact-calc policy surface explicit.
